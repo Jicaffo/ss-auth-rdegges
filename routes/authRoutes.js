@@ -56,6 +56,7 @@ router.get("/login", (req, res) => {
  * Once a user is logged in, they will be sent to the dashboard page.
  */
 router.post("/login", (req, res) => {
+  // 2nd argument defines which fields to bring in the user object
   models.User.findOne({ email: req.body.email }, "firstName lastName email password", (err, user) => {
     if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
       return res.render("login", {
@@ -64,7 +65,8 @@ router.post("/login", (req, res) => {
       });
     }
 
-    auth.createUserSession(req, res, user);
+    //auth.createUserSession(req, res, user);
+    req.session.userId = user._id // Versión como está en la charla
     res.redirect("/dashboard");
   });
 });

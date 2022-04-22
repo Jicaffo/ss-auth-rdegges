@@ -1,16 +1,13 @@
 const path = require("path");
 
-const bcrypt = require("bcryptjs");
-const bodyParser = require("body-parser");
-const csurf = require("csurf");
 const express = require("express");
 const mongoose = require("mongoose");
 const sessions = require("client-sessions");
+const csurf = require("csurf");
 
 const auth = require("./auth");
-const authRoutes = require("./routes/auth");
-const mainRoutes = require("./routes/main");
-const models = require("./models");
+const authRoutes = require("./routes/authRoutes");
+const mainRoutes = require("./routes/mainRoutes");
 const settings = require("./settings");
 
 let app = express();
@@ -35,7 +32,7 @@ app.use(sessions({
     secure: settings.SESSION_SECURE_COOKIES
   }
 }));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 app.use(csurf());
 app.use(auth.loadUserFromSession);
 
